@@ -42,28 +42,37 @@ public class TaskDbContext(DbContextOptions<TaskDbContext> options) : DbContext(
         modelBuilder.Entity<Models.Task>(e =>
         {
             e.HasKey(x => x.Id);
+
             e.Property(x => x.UserId).IsRequired();
-            e.Property(x => x.Title).IsRequired();       // Guid (no seu model)
+            e.Property(x => x.Title)
+                .IsRequired()
+                .HasMaxLength(160);
             e.Property(x => x.Description).IsRequired();
             e.Property(x => x.IsCompleted).IsRequired();
-            e.Property(x => x.CategoryId);               // int (no seu model, não-nullable)
+
+            e.Property(x => x.CategoryId).IsRequired();
+
             e.Property(x => x.Created).IsRequired();
             e.Property(x => x.UpdatedAt).IsRequired();
 
+            // FK para o dono da tarefa
             e.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // FK composta para garantir consistência de categoria do MESMO usuário
+            // FK composta: garante que a categoria pertence ao MESMO usuário
             e.HasOne<Category>()
                 .WithMany()
                 .HasForeignKey(x => new { x.UserId, x.CategoryId })
                 .OnDelete(DeleteBehavior.Restrict);
 
             e.ToTable("tasks");
+
+            // Índices úteis
             e.HasIndex(x => new { x.UserId, x.IsCompleted });
             e.HasIndex(x => new { x.UserId, x.CategoryId });
         });
+
     }
 }

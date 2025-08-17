@@ -1,6 +1,45 @@
 @TaskManagerApi_HostAddress = http://localhost:5064
+@contentType = application/json
 
-GET {{TaskManagerApi_HostAddress}}/weatherforecast/
+###
+# LIST: GET /api/tasks (filtros/ordenação/paginação)
+GET {{TaskManagerApi_HostAddress}}/api/tasks?UserId=&CategoryId=&IsCompleted=&Search=&SortBy=updatedAt&SortDir=desc&Page=1&PageSize=20
 Accept: application/json
 
 ###
+# CREATE: POST /api/tasks  → salva {{taskId}} globalmente
+# @name createTask
+POST {{TaskManagerApi_HostAddress}}/api/tasks
+Content-Type: {{contentType}}
+
+{
+  "userId": "11111111-1111-1111-1111-111111111111",
+  "title": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "description": "Exemplo",
+  "isCompleted": false
+}
+
+> {%
+    const b = JSON.parse(response.body);
+    client.global.set("taskId", b.id ?? b.Id);
+%}
+
+###
+# GET BY ID
+GET {{TaskManagerApi_HostAddress}}/api/tasks/{{taskId}}
+Accept: application/json
+
+###
+# UPDATE: PUT /api/tasks/{id}
+PUT {{TaskManagerApi_HostAddress}}/api/tasks/{{taskId}}
+Content-Type: {{contentType}}
+
+{
+  "title": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+  "description": "Atualizada",
+  "isCompleted": true
+}
+
+###
+# DELETE
+DELETE {{TaskManagerApi_HostAddress}}/api/tasks/{{taskId}}
