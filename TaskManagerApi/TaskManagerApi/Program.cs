@@ -14,6 +14,16 @@ builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseNpgsql(cs);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("frontend", p =>
+        p.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+    );
+});
+
 // JWT options
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
@@ -51,6 +61,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseHttpsRedirection();
+
+app.UseCors("frontend");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
