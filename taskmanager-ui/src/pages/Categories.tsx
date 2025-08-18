@@ -23,6 +23,7 @@ const CategoriesPage: React.FC = () => {
     } catch (e:Any) { setError(e?.response?.data ?? 'Falha ao carregar categorias'); }
     finally { setLoading(false); }
   };
+
   React.useEffect(() => {
     fetchAll();
     /* eslint-disable-next-line */
@@ -52,15 +53,36 @@ const CategoriesPage: React.FC = () => {
 
       <Paper sx={{ p: 2, mb: 2 }}>
         <Stack direction={{ xs:'column', sm:'row' }} spacing={2}>
-          <TextField label="Buscar" value={filters.Search ?? ''} onChange={e=>setFilters(f=>({...f, Search:e.target.value, Page:1}))} fullWidth />
-          <TextField select label="Ordenar por" value={filters.SortBy} onChange={e=>setFilters(f=>({...f, SortBy:e.target.value as Any, Page:1}))} sx={{ minWidth:160 }}>
-            <option value="id">Id</option>
-            <option value="description">Descrição</option>
-          </TextField>
-          <TextField select label="Direção" value={filters.SortDir} onChange={e=>setFilters(f=>({...f, SortDir:e.target.value as Any, Page:1}))} sx={{ minWidth:120 }}>
-            <option value="asc">Asc</option>
-            <option value="desc">Desc</option>
-          </TextField>
+          <TextField
+            label="Buscar"
+            value={filters.Search ?? ''}
+            onChange={e => {
+                const v = e.target.value;
+                setFilters(f => ({ ...f, Search: v, Page: 1 }));
+                fetchAll();
+                //loadCategories({ ...filters, Search: v, Page: 1 }); // ou loadTasks
+            }}
+            onKeyUp={e => {
+                fetchAll();
+            }}
+            fullWidth
+            />
+            <select
+                select
+                label="Direção"
+                value={filters.SortDir}
+                onChange={e => {
+                    const v = e.target.value as Any;
+                    setFilters(f => ({ ...f, SortDir: v, Page: 1 }));
+                    fetchAll();
+                    //loadCategories({ ...filters, SortDir: v, Page: 1 });
+                }}
+                sx={{ minWidth: 120 }}
+                >
+                <option value="asc">Asc</option>
+                <option value="desc">Desc</option>
+            </select>
+
         </Stack>
       </Paper>
 
