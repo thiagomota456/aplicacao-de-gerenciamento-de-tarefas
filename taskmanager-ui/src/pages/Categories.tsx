@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { listCategories, createCategory, updateCategory, deleteCategory } from '../api/categories';
 import type { CategoryDto, CategoryQuery } from '../types';
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Alert, Pagination } from '@mui/material';
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Alert, Pagination, MenuItem } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -52,39 +52,41 @@ const CategoriesPage: React.FC = () => {
       </Stack>
 
       <Paper sx={{ p: 2, mb: 2 }}>
-        <Stack direction={{ xs:'column', sm:'row' }} spacing={2}>
-          <TextField
-            label="Buscar"
-            value={filters.Search ?? ''}
-            onChange={e => {
-                const v = e.target.value;
-                setFilters(f => ({ ...f, Search: v, Page: 1 }));
-                fetchAll();
-                //loadCategories({ ...filters, Search: v, Page: 1 }); // ou loadTasks
-            }}
-            onKeyUp={e => {
-                fetchAll();
-            }}
-            fullWidth
-            />
-            <select
-                select
-                label="Direção"
-                value={filters.SortDir}
-                onChange={e => {
-                    const v = e.target.value as Any;
-                    setFilters(f => ({ ...f, SortDir: v, Page: 1 }));
-                    fetchAll();
-                    //loadCategories({ ...filters, SortDir: v, Page: 1 });
-                }}
-                sx={{ minWidth: 120 }}
-                >
-                <option value="asc">Asc</option>
-                <option value="desc">Desc</option>
-            </select>
+  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+    <TextField
+      label="Buscar"
+      value={filters.Search ?? ''}
+      onChange={(e) => {
+        const v = e.target.value;
+        setFilters(f => ({ ...f, Search: v, Page: 1 }));
+        // garante filtros atualizados antes de buscar
+        setTimeout(() => fetchAll(), 0);
+      }}
+      onKeyUp={() => {
+        // dispara filtragem ao soltar a tecla
+        fetchAll();
+      }}
+      fullWidth
+    />
 
-        </Stack>
-      </Paper>
+    <TextField
+      select
+      fullWidth
+      label="Direção"
+      value={filters.SortDir}
+      onChange={(e) => {
+        const v = e.target.value as 'asc' | 'desc';
+        setFilters(f => ({ ...f, SortDir: v, Page: 1 }));
+        setTimeout(() => fetchAll(), 0);
+      }}
+      sx={{ minWidth: 120 }}
+    >
+      <MenuItem value="asc">Asc</MenuItem>
+      <MenuItem value="desc">Desc</MenuItem>
+    </TextField>
+  </Stack>
+</Paper>
+
 
       {error && <Alert severity="error" sx={{ mb:2 }}>{error}</Alert>}
 
