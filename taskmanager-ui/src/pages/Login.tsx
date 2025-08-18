@@ -36,7 +36,7 @@ const LoginPage: React.FC = () => {
           <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{ mt: 2 }}>
             {loading ? 'Entrando...' : 'Entrar'}
           </Button>
-          <Button component={RouterLink} to="/auth" fullWidth sx={{ mt: 1 }}>
+          <Button component={RouterLink} to="/auth/register" fullWidth sx={{ mt: 1 }}>
             Não tem conta? Registre-se
           </Button>
         </Box>
