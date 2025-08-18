@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import * as React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import TasksPage from './pages/Tasks';
+import TaskEditNewPage from './pages/TaskEditNew';
+import CategoriesPage from './pages/Categories';
+import PrivateRoute from './auth/PrivateRoute';
+import { Container } from '@mui/material';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <NavBar />
+      <Container sx={{ pb: 4 }}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/tasks" />} />
+          <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/register" element={<RegisterPage />} />
 
-export default App
+          <Route element={<PrivateRoute />}>
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/tasks/new" element={<TaskEditNewPage />} />
+            <Route path="/tasks/:id/edit" element={<TaskEditNewPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Container>
+    </>
+  );
+};
+
+export default App;
