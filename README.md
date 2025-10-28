@@ -214,4 +214,5 @@ Controllers independentes e endpoints REST claros.
 ## 🧾 Créditos
 
 **Autor:** Thiago Soares Mota
+
 **Licença:** MIT
