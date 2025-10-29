@@ -1,0 +1,108 @@
+# =====================================
+# .NET / ASP.NET Core API .gitignore
+# =====================================
+
+# 🔹 Build e binários
+bin/
+obj/
+out/
+publish/
+*.exe
+*.dll
+*.pdb
+*.mdb
+*.cache
+*.log
+
+# 🔹 Configurações do usuário (IDE)
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vscode/
+.idea/
+*.swp
+*.DS_Store
+
+# 🔹 Arquivos temporários e backup
+*.tmp
+*.bak
+*.old
+*.orig
+*.temp
+*.lock
+*.zip
+*.tar.gz
+
+# 🔹 Logs e relatórios
+logs/
+*.log
+*.tlog
+*.trx
+TestResults/
+*.coverage
+*.coveragexml
+
+# 🔹 Dependências (caso existam subprojetos JS ou frontend juntos)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 🔹 Ambiente e segredos
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# 🔹 Banco de dados e cache local
+*.db
+*.sqlite
+*.db-shm
+*.db-wal
+*.db-journal
+
+# 🔹 Ferramentas e Docker
+docker-compose.override.yml
+*.pid
+*.pid.lock
+
+# 🔹 Cobertura de testes
+coverage/
+coverage.cobertura.xml
+coverage.opencover.xml
+lcov-report/
+.coverage
+*.coverage
+*.coveragexml
+
+# 🔹 Publicações temporárias
+wwwroot/
+publish/
+dist/
+build/
+tmp/
+temp/
+
+# 🔹 Backup do sistema operacional
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# =====================================
+# ✅ Específico da sua API
+# =====================================
+# Evitar segredos no repositório
+TaskManagerApi/TaskManagerApi/.env
+TaskManagerApi/TaskManagerApi/appsettings.Development.json
+
+# =====================================
+# 🔹 Fim
+# =====================================

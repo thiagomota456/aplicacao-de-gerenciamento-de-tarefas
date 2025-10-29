@@ -169,12 +169,19 @@ O token é configurado no arquivo `appsettings.json`:
 ## 🧮 Banco de Dados
 
 O sistema utiliza **Entity Framework Core** e **PostgreSQL**.
-A conexão é configurada em `appsettings.json`:
+A conexão é configurada em `appsettings.json` ou no `.env`:
+
+No `appsettings.json`:
 
 ```json
 "ConnectionStrings": {
   "DefaultConnection": "Host=localhost;Database=TaskManager;Username=postgres;Password=admin"
 }
+```
+
+No `.env`:
+```env
+ConnectionStrings__Default=Host=localhost;Database=TaskManager;Username=postgres;Password=admin;
 ```
 
 ---
@@ -204,6 +211,8 @@ Interface moderna e responsiva, com autenticação JWT integrada.
 Interface com **busca**, **ordenação**, **paginação** e **filtros dinâmicos**.
 *(Imagem: página `Tasks.tsx`)*
 
+Para mais, [acesse essa pagina](./TaskManagerApi/docs/filtros.md).
+
 ### 🧱 Estrutura do Backend
 
 Controllers independentes e endpoints REST claros.
@@ -211,8 +220,15 @@ Controllers independentes e endpoints REST claros.
 
 ---
 
+## 🧩 Como o `.env` funciona neste projeto
+
+O projeto utiliza o pacote **[DotNetEnv](https://www.nuget.org/packages/DotNetEnv)** para permitir o uso de variáveis de ambiente definidas em um arquivo `.env`.
+Esse mecanismo serve para **retirar informações sensíveis** do `appsettings.json` (como senhas, chaves JWT e URLs) e **mantê-las fora do código versionado**.
+
+Para mais detalhes, [acesse essa página](./TaskManagerApi/docs/envFiles.md)
+---
+
 ## 🧾 Créditos
 
 **Autor:** Thiago Soares Mota
-
 **Licença:** MIT

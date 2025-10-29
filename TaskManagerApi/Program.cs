@@ -4,33 +4,51 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data;
 using TaskManagerApi.Services;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// EF Core + PostgreSQL
-builder.Services.AddDbContext<TaskDbContext>(options =>
+if (builder.Environment.IsDevelopment())
 {
-    var cs = builder.Configuration.GetConnectionString("Default");
-    options.UseNpgsql(cs);
-});
+    Env.Load();
+}
+
+builder.Configuration.AddEnvironmentVariables();
+
+var connectionString = builder.Configuration["ConnectionStrings__Default"]?? builder.Configuration.GetConnectionString("Default");
+
+builder.Services.AddDbContext<TaskDbContext>(options =>
+    options.UseNpgsql(connectionString)
+);
+
+var allowedOrigins = builder.Configuration["Cors__AllowedOrigins"]?
+    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    ?? ["http://localhost:5173", "http://127.0.0.1:5173"];
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("frontend", p =>
-        p.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+    options.AddPolicy("frontend", policy =>
+        policy.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
     );
 });
 
-// JWT options
+
+var jwtKey = builder.Configuration["Jwt__Key"];
+var jwtIssuer = builder.Configuration["Jwt__Issuer"];
+var jwtAudience = builder.Configuration["Jwt__Audience"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new Exception("A chave JWT (Jwt__Key) não foi configurada. Verifique seu arquivo .env");
+}
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
-// Authentication + Authorization
-var jwtSection = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSection["Key"]!);
+var key = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -41,9 +59,9 @@ builder.Services
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = true,
-            ValidIssuer = jwtSection["Issuer"],
+            ValidIssuer = jwtIssuer,
             ValidateAudience = true,
-            ValidAudience = jwtSection["Audience"],
+            ValidAudience = jwtAudience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -51,7 +69,6 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-// Controllers + Swagger/OpenAPI
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -63,10 +80,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("frontend");
-
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
