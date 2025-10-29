@@ -35,7 +35,6 @@ builder.Services.AddCors(options =>
     );
 });
 
-
 var jwtKey = builder.Configuration["Jwt__Key"];
 var jwtIssuer = builder.Configuration["Jwt__Issuer"];
 var jwtAudience = builder.Configuration["Jwt__Audience"];
