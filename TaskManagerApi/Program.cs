@@ -23,7 +23,7 @@ builder.Services.AddDbContext<TaskDbContext>(options =>
 
 var allowedOrigins = builder.Configuration["Cors__AllowedOrigins"]?
     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-    ?? ["http://localhost:5173", "http://127.0.0.1:5173"];
+    ?? ["*", "*"];
 
 builder.Services.AddCors(options =>
 {
@@ -40,15 +40,21 @@ var jwtKey = builder.Configuration["Jwt__Key"];
 var jwtIssuer = builder.Configuration["Jwt__Issuer"];
 var jwtAudience = builder.Configuration["Jwt__Audience"];
 
+byte[] key;
+
 if (string.IsNullOrEmpty(jwtKey))
 {
-    throw new Exception("A chave JWT (Jwt__Key) não foi configurada. Verifique seu arquivo .env");
+    var jwtSection = builder.Configuration.GetSection("Jwt");
+    key = Encoding.UTF8.GetBytes(jwtSection["Key"]!);
+}
+else
+{
+    builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+    builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
+    key = Encoding.UTF8.GetBytes(jwtKey);
 }
 
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
-var key = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
