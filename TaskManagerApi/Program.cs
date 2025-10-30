@@ -4,56 +4,64 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data;
 using TaskManagerApi.Services;
-using DotNetEnv;
+using TaskManagerApi.Services.EnvLoad;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-    Env.Load();
-}
+EnvConfig.Load();
 
 builder.Configuration.AddEnvironmentVariables();
 
-var connectionString = builder.Configuration["ConnectionStrings__Default"]?? builder.Configuration.GetConnectionString("Default");
+var connectionString = builder.Configuration["ConnectionStrings:Default"];
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+
+if (string.IsNullOrWhiteSpace(jwtKey))
+    throw new InvalidOperationException("Defina Jwt:Key.");
+
+if (string.IsNullOrWhiteSpace(jwtIssuer))
+    throw new InvalidOperationException("Defina Jwt:Issuer.");
+
+if (string.IsNullOrWhiteSpace(jwtAudience))
+    throw new InvalidOperationException("Defina Jwt:Audience.");
 
 builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
 
-var allowedOrigins = builder.Configuration["Cors__AllowedOrigins"]?
+var allowedOriginsRaw = builder.Configuration["Cors:AllowedOrigins"];
+var allowedOrigins = allowedOriginsRaw?
     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-    ?? ["*", "*"];
+    .Distinct(StringComparer.OrdinalIgnoreCase)
+    .ToArray() ?? [];
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("frontend", policy =>
-        policy.WithOrigins(allowedOrigins)
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-    );
+    {
+        if (allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+        else
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    });
 });
 
-var jwtKey = builder.Configuration["Jwt__Key"];
-var jwtIssuer = builder.Configuration["Jwt__Issuer"];
-var jwtAudience = builder.Configuration["Jwt__Audience"];
+// --- JWT ---
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
-byte[] key;
-
-if (string.IsNullOrEmpty(jwtKey))
-{
-    var jwtSection = builder.Configuration.GetSection("Jwt");
-    key = Encoding.UTF8.GetBytes(jwtSection["Key"]!);
-}
-else
-{
-    builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-    builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
-    key = Encoding.UTF8.GetBytes(jwtKey);
-}
-
-
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,7 +70,7 @@ builder.Services
         opt.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
+            IssuerSigningKey = key,
             ValidateIssuer = true,
             ValidIssuer = jwtIssuer,
             ValidateAudience = true,
@@ -74,6 +82,7 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+// Controllers + OpenAPI
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -88,6 +97,7 @@ app.UseHttpsRedirection();
 app.UseCors("frontend");
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

@@ -105,16 +105,21 @@ Exemplo de header:
 Authorization: Bearer <token>
 ```
 
-O token é configurado no arquivo `appsettings.json`:
+O tempo do token é configurado no arquivo `appsettings.json`:
 
 ```json
 "Jwt": {
-  "Key": "chave-secreta",
-  "Issuer": "TaskManagerApi",
-  "Audience": "TaskManagerApiUsers",
   "AccessTokenMinutes": 120
 }
 ```
+
+Todo o resto é configurado no .env por serem dados senciveis. Algo como:
+```env
+Jwt__Issuer=TaskManagerApi
+Jwt__Audience=TaskManagerApi
+Jwt__Key=E%7@J5@4#1IGn&!T2p6hPEE%6x$5%X@1
+```
+
 
 ---
 
@@ -184,6 +189,8 @@ No `.env`:
 ConnectionStrings__Default=Host=localhost;Database=TaskManager;Username=postgres;Password=admin;
 ```
 
+Para saber sobre configurações e uso do banco de dados [isso pode ajudar](./TaskManagerApi/docs/Dados.md)
+
 ---
 
 ## 🧰 Stack Tecnológica
@@ -224,7 +231,6 @@ Controllers independentes e endpoints REST claros.
 
 O projeto utiliza o pacote **[DotNetEnv](https://www.nuget.org/packages/DotNetEnv)** para permitir o uso de variáveis de ambiente definidas em um arquivo `.env`.
 Esse mecanismo serve para **retirar informações sensíveis** do `appsettings.json` (como senhas, chaves JWT e URLs) e **mantê-las fora do código versionado**.
-
 Para mais detalhes, [acesse essa página](./TaskManagerApi/docs/envFiles.md)
 ---
 

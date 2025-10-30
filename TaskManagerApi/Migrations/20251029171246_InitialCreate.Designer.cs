@@ -12,7 +12,7 @@ using TaskManagerApi.Data;
 namespace TaskManagerApi.Migrations
 {
     [DbContext(typeof(TaskDbContext))]
-    [Migration("20250817185438_InitialCreate")]
+    [Migration("20251029171246_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
