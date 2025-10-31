@@ -37,17 +37,19 @@ aplicacao-de-gerenciamento-de-tarefas-main/
 │   └── src/components/          # Componentes reutilizáveis (NavBar, Dialogs, etc.)
 │
 └── README.md                    # Este arquivo
-````
+```
 
 ---
 
 ## ⚙️ Requisitos
 
 ### Backend (.NET 9)
+
 - [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Frontend (Node.js)
+
 - [Node.js 18+](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
 
@@ -56,10 +58,11 @@ aplicacao-de-gerenciamento-de-tarefas-main/
 ## 🚀 Executando o Projeto
 
 ### 1. Clonar o repositório
+
 ```bash
 git clone https://github.com/thiagosmota/aplicacao-de-gerenciamento-de-tarefas.git
 cd aplicacao-de-gerenciamento-de-tarefas-main
-````
+```
 
 ### 2. Configurar o backend
 
@@ -114,12 +117,12 @@ O tempo do token é configurado no arquivo `appsettings.json`:
 ```
 
 Todo o resto é configurado no .env por serem dados senciveis. Algo como:
+
 ```env
 Jwt__Issuer=TaskManagerApi
 Jwt__Audience=TaskManagerApi
 Jwt__Key=E%7@J5@4#1IGn&!T2p6hPEE%6x$5%X@1
 ```
-
 
 ---
 
@@ -158,6 +161,8 @@ Jwt__Key=E%7@J5@4#1IGn&!T2p6hPEE%6x$5%X@1
 }
 ```
 
+Para mais, [acesse essa pagina](./TaskManagerApi/docs/filtros.md).
+
 ---
 
 ### 🗂️ Categorias (`/api/categories`)
@@ -185,6 +190,7 @@ No `appsettings.json`:
 ```
 
 No `.env`:
+
 ```env
 ConnectionStrings__Default=Host=localhost;Database=TaskManager;Username=postgres;Password=admin;
 ```
@@ -211,19 +217,39 @@ Para saber sobre configurações e uso do banco de dados [isso pode ajudar](./Ta
 ### 📋 Tela de Login e Registro
 
 Interface moderna e responsiva, com autenticação JWT integrada.
-*(Imagem: página `Login.tsx` e `Register.tsx`)*
+
+#### Login.tsx:
+
+![Login.tsx](./images/2.png)
+
+#### Register.tsx:
+
+![Register.tsx](./images/1.png)
 
 ### 🗂️ Filtros e Listagem de Tarefas
 
 Interface com **busca**, **ordenação**, **paginação** e **filtros dinâmicos**.
-*(Imagem: página `Tasks.tsx`)*
 
-Para mais, [acesse essa pagina](./TaskManagerApi/docs/filtros.md).
+#### Tasks.tsx:
+
+![Tasks.tsx imag 1](./images/3.png)
+
+![Tasks.tsx imag 2](./images/4.png)
+
+![Tasks.tsx imag 3](./images/5.png)
+
+![Tasks.tsx imag 4](./images/6.png)
+
+### 🗂️ Categories.tsx
+
+![Tasks.tsx imag 1](./images/7.png)
+
+![Tasks.tsx imag 2](./images/8.png)
 
 ### 🧱 Estrutura do Backend
 
 Controllers independentes e endpoints REST claros.
-*(Baseado nos arquivos `TasksController.cs`, `CategoriesController.cs` e `AuthController.cs`)*
+_(Baseado nos arquivos `TasksController.cs`, `CategoriesController.cs` e `AuthController.cs`)_
 
 ---
 
@@ -232,9 +258,11 @@ Controllers independentes e endpoints REST claros.
 O projeto utiliza o pacote **[DotNetEnv](https://www.nuget.org/packages/DotNetEnv)** para permitir o uso de variáveis de ambiente definidas em um arquivo `.env`.
 Esse mecanismo serve para **retirar informações sensíveis** do `appsettings.json` (como senhas, chaves JWT e URLs) e **mantê-las fora do código versionado**.
 Para mais detalhes, [acesse essa página](./TaskManagerApi/docs/envFiles.md)
+
 ---
 
 ## 🧾 Créditos
 
 **Autor:** Thiago Soares Mota
+
 **Licença:** MIT
