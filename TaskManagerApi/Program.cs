@@ -92,6 +92,25 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<TaskDbContext>();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+            Console.WriteLine("Migrações do banco de dados aplicadas com sucesso.");
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
+    }
+}
+
 app.UseCors("AllowAllHeaders");
 app.UseAuthentication();
 app.UseAuthorization();
