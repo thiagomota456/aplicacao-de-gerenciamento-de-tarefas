@@ -73,7 +73,7 @@ CREATE INDEX "IX_tasks_UserId_IsCompleted" ON public.tasks USING btree ("UserId"
 ## 🧪 Dados de exemplo (seed)
 
 > Executar este script **após** a estrutura existir.
-> As senhas são **mocks**. (Todas as senhas são o MD5 Hash de mypsd123)
+> As senhas são **mocks**. (Todas as senhas são admin12345)
 
 ```sql
 BEGIN;
@@ -84,9 +84,9 @@ BEGIN;
 -- USERS
 -- =====================
 INSERT INTO public.users ("Id","Username","PasswordHash","CreatedAt") VALUES
-('8a1a5b1e-3c2d-4f8a-9b1c-12a34b56c701','alice','4cec8cbaa4615e7e066d23c1da6dafb1','2025-05-05 09:12:00+00'),
-('9b2b6c2f-4d3e-4a9b-8c2d-23b45c67d802','bruno','4cec8cbaa4615e7e066d23c1da6dafb1','2025-04-18 14:40:00+00'),
-('0c3c7d30-5e4f-4bac-8d3e-34c56d78e903','carla','4cec8cbaa4615e7e066d23c1da6dafb1','2025-03-22 08:25:00+00');
+('8a1a5b1e-3c2d-4f8a-9b1c-12a34b56c701','alice','$2a$11$S5WrXqkfaM/mj6t7H0oKZ.n6roFh.vFluYSl56SssGBPo5Dl/mHTm','2025-05-05 09:12:00+00'),
+('9b2b6c2f-4d3e-4a9b-8c2d-23b45c67d802','bruno','$2a$11$S5WrXqkfaM/mj6t7H0oKZ.n6roFh.vFluYSl56SssGBPo5Dl/mHTm','2025-04-18 14:40:00+00'),
+('0c3c7d30-5e4f-4bac-8d3e-34c56d78e903','carla','$2a$11$S5WrXqkfaM/mj6t7H0oKZ.n6roFh.vFluYSl56SssGBPo5Dl/mHTm','2025-03-22 08:25:00+00');
 
 -- =====================
 -- CATEGORIES (por usuário)
