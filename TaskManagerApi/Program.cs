@@ -6,14 +6,10 @@ using TaskManagerApi.Data;
 using TaskManagerApi.Services;
 using TaskManagerApi.Services.EnvLoad;
 
-// --- CORREÇÃO 1: Mover EnvConfig.Load() para ANTES do builder ---
-// Isso garante que as variáveis de ambiente do .env existam
-// antes que o builder tente lê-las.
 EnvConfig.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Esta linha agora é lida corretamente após o EnvConfig.Load()
 builder.Configuration.AddEnvironmentVariables();
 
 var connectionString = builder.Configuration["ConnectionStrings:Default"];
@@ -47,7 +43,6 @@ builder.Services.AddCors(options =>
     {
         if (origins.Length == 0)
         {
-            // DEV fallback: permite tudo (sem cookies)
             policy.AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
@@ -57,8 +52,6 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(origins)
                 .AllowAnyHeader()
                 .AllowAnyMethod();
-            // Se usar cookies/autenticação via cookie: adicione .AllowCredentials()
-            // e NÃO use AllowAnyOrigin nesse caso.
         }
     });
 });
@@ -99,20 +92,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-// --- CORREÇÃO 2: Reordenar o pipeline da aplicação ---
-
-// Mantenha o HTTPS comentado se você está testando em HTTP
-//app.UseHttpsRedirection();
-
-// 1. CORS deve vir antes de Autenticação/Autorização
 app.UseCors("AllowAllHeaders");
-
-// 2. Autenticação (Quem é você?) deve vir ANTES de Autorização
 app.UseAuthentication();
-
-// 3. Autorização (O que você pode fazer?) deve vir DEPOIS de Autenticação
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
