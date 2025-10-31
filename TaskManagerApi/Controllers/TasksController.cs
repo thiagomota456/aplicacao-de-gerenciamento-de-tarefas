@@ -14,7 +14,6 @@ namespace TaskManagerApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[EnableCors("AllowAllHeaders")]
 public class TasksController(TaskDbContext db) : ControllerBase
 {
     [HttpGet]

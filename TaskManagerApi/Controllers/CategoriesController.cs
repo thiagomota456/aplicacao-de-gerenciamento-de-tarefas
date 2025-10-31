@@ -12,7 +12,6 @@ namespace TaskManagerApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[EnableCors("AllowAllHeaders")]
 public class CategoriesController(TaskDbContext db) : ControllerBase
 {
     // GET: api/categories
