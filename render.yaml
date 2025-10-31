@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: taskmanager-api
+    plan: free
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        value: "Host=...;Port=...;Database=...;Username=...;Password=..."
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: JWT_ISSUER
+        value: "https://taskmanager-api.onrender.com"
+      - key: JWT_AUDIENCE
+        value: "https://taskmanager-api.onrender.com"
+      - key: Cors__AllowedOrigins
+        value: "https://taskmanager-api.onrender.com,http://localhost:5173"

@@ -1,0 +1,15 @@
+# Excluir saídas de build do .NET
+**/bin/
+**/obj/
+
+# Excluir dependências do Node.js (serão instaladas no container)
+taskmanager-ui/node_modules/
+taskmanager-ui/dist/
+
+# Excluir arquivos do Git e .env locais
+.git/
+.gitignore
+.gitattributes
+*.env
+**/*.env
+!taskmanager-ui/.env
