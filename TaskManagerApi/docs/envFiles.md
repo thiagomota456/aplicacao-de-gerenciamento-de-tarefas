@@ -63,6 +63,17 @@ var allowedOrigins = builder.Configuration["Cors__AllowedOrigins"]?.Split(',');
 * Em **produção**, as variáveis podem ser definidas diretamente no ambiente (por exemplo, nas configurações do Docker, Azure, AWS ou outro servidor).
 * Isso garante que nenhum segredo (como senhas ou chaves JWT) apareça no código-fonte.
 
+Arquivo `.env` pra desenvolvimeto:
+
+````env
+ASPNETCORE_ENVIRONMENT=Development
+ConnectionStrings__Default=Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=@avs123
+Cors__AllowedOrigins=http://localhost:5173
+Jwt__Issuer=TaskManagerApi
+Jwt__Audience=TaskManagerApi
+Jwt__Key=E%7@J5@4#1IGn&!T2p6hPEE%6x$5%X@1
+```
+
 ---
 
 ### Em resumo:
