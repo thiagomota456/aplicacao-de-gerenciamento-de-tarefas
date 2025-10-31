@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace TaskManagerApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[EnableCors("AllowAllHeaders")]
 public class TasksController(TaskDbContext db) : ControllerBase
 {
     [HttpGet]

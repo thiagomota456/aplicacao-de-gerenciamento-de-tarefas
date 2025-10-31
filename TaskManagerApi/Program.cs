@@ -39,7 +39,7 @@ var allowedOrigins = allowedOriginsRaw?
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("frontend", policy =>
+    options.AddPolicy("AllowAllHeaders", policy =>
     {
         if (allowedOrigins.Length > 0)
         {
@@ -94,7 +94,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("frontend");
+app.UseCors("AllowAllHeaders");
 app.UseAuthentication();
 app.UseAuthorization();
 

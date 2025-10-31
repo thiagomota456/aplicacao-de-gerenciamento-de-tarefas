@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManagerApi.Data;
@@ -9,6 +10,7 @@ namespace TaskManagerApi.Controllers;
 
 [ApiController]
 [Route("auth")]
+[EnableCors("AllowAllHeaders")]
 public class AuthController(TaskDbContext db, IJwtTokenService jwt) : ControllerBase
 {
     [HttpPost("register")]
