@@ -35,37 +35,39 @@ dotnet ef database update
 
 ```sql
 CREATE TABLE users (
-                       "Id" uuid NOT NULL,
-                       "Username" text NOT NULL,
-                       "PasswordHash" text NOT NULL,
-                       "CreatedAt" timestamptz NOT NULL,
-                       CONSTRAINT "PK_users" PRIMARY KEY ("Id")
+    "Id" uuid NOT NULL,
+    "Username" text NOT NULL,
+    "PasswordHash" text NOT NULL,
+    "CreatedAt" timestamptz NOT NULL,
+    CONSTRAINT "PK_users" PRIMARY KEY ("Id")
 );
 
 CREATE TABLE categories (
-                            "Id" int4 NOT NULL,
-                            "UserId" uuid NOT NULL,
-                            "Description" text NULL,
-                            CONSTRAINT "PK_categories" PRIMARY KEY ("UserId", "Id"),
-                            CONSTRAINT "FK_categories_users_UserId" FOREIGN KEY ("UserId") REFERENCES users("Id") ON DELETE CASCADE
+    "Id" int4 NOT NULL,
+    "UserId" uuid NOT NULL,
+    "Description" text NULL,
+    CONSTRAINT "PK_categories" PRIMARY KEY ("UserId", "Id"),
+    CONSTRAINT "FK_categories_users_UserId" FOREIGN KEY ("UserId") REFERENCES users("Id") ON DELETE CASCADE
 );
 CREATE INDEX "IX_categories_UserId_Description" ON public.categories USING btree ("UserId", "Description");
 
 CREATE TABLE tasks (
-                       "Id" uuid NOT NULL,
-                       "UserId" uuid NOT NULL,
-                       "Title" varchar(160) NOT NULL,
-                       "Description" text NOT NULL,
-                       "IsCompleted" bool NOT NULL,
-                       "CategoryId" int4 NOT NULL,
-                       "Created" timestamptz NOT NULL,
-                       "UpdatedAt" timestamptz NOT NULL,
-                       CONSTRAINT "PK_tasks" PRIMARY KEY ("Id"),
-                       CONSTRAINT "FK_tasks_categories_UserId_CategoryId" FOREIGN KEY ("UserId","CategoryId") REFERENCES categories("UserId","Id") ON DELETE RESTRICT,
-                       CONSTRAINT "FK_tasks_users_UserId" FOREIGN KEY ("UserId") REFERENCES users("Id") ON DELETE CASCADE
+    "Id" uuid NOT NULL,
+    "UserId" uuid NOT NULL,
+    "Title" varchar(160) NOT NULL,
+    "Description" text NOT NULL,
+    "IsCompleted" bool NOT NULL,
+    "CategoryId" int4 NOT NULL,
+    "Created" timestamptz NOT NULL,
+    "UpdatedAt" timestamptz NOT NULL,
+    CONSTRAINT "PK_tasks" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_tasks_categories_UserId_CategoryId" FOREIGN KEY ("UserId","CategoryId") REFERENCES categories("UserId","Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_tasks_users_UserId" FOREIGN KEY ("UserId") REFERENCES users("Id") ON DELETE CASCADE
 );
+
 CREATE INDEX "IX_tasks_UserId_CategoryId" ON public.tasks USING btree ("UserId", "CategoryId");
 CREATE INDEX "IX_tasks_UserId_IsCompleted" ON public.tasks USING btree ("UserId", "IsCompleted");
+
 ```
 
 ---
