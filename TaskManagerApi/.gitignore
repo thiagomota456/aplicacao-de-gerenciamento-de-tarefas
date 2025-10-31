@@ -100,8 +100,7 @@ $RECYCLE.BIN/
 # ✅ Específico da sua API
 # =====================================
 # Evitar segredos no repositório
-TaskManagerApi/TaskManagerApi/.env
-TaskManagerApi/TaskManagerApi/appsettings.Development.json
+.env
 
 # =====================================
 # 🔹 Fim
