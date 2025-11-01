@@ -95,7 +95,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-// Bloco de Migração Automática (Está correto)
+/*
+// Bloco de Migração Automática
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -112,11 +113,10 @@ using (var scope = app.Services.CreateScope())
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
-        // Adicionado 'throw' para impedir que a app inicie se o banco falhar.
-        // Isso é mais seguro para o deploy.
-        throw; 
+        throw;
     }
 }
+*/
 
 app.UseCors("AllowAllHeaders");
 app.UseAuthentication();
