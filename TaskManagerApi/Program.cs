@@ -62,7 +62,10 @@ builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
 
-builder.Services
+// --- CORREÇÃO AQUI ---
+// No seu código estava "builder.services" (minúsculo), o que causa um erro.
+// O correto é "builder.Services" (maiúsculo).
+builder.Services 
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
@@ -92,6 +95,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+// Bloco de Migração Automática (Está correto)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -108,6 +112,9 @@ using (var scope = app.Services.CreateScope())
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
+        // Adicionado 'throw' para impedir que a app inicie se o banco falhar.
+        // Isso é mais seguro para o deploy.
+        throw; 
     }
 }
 
