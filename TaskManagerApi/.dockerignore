@@ -1,0 +1,30 @@
+# Excluir saídas de build do .NET
+**/bin/
+**/obj/
+
+# Arquivos de configuração locais / IDE
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Git e ambiente local
+.git/
+.gitignore
+.gitattributes
+*.env
+**/*.env
+local.settings.json
+appsettings.Development.json
+
+# Logs e caches
+*.log
+**/.cache/
+
+# Node / outros (caso haja front-end no repo)
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
