@@ -18,7 +18,7 @@ const RegisterPage: React.FC = () => {
     try {
       await register(username, password);
       nav('/tasks');
-    } catch (err) {
+    } catch (err: any) {
       setError(err?.response?.data ?? 'Falha no registro');
     } finally {
       setLoading(false);

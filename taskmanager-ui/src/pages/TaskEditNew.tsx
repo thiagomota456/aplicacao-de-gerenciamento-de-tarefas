@@ -19,18 +19,18 @@ const TaskEditNewPage: React.FC = () => {
       try {
         const [catsRes, taskRes] = await Promise.all([
           listCategories({ Page: 1, PageSize: 200, SortBy: 'id', SortDir: 'asc' }),
-          isEdit ? getTask(id!) : Promise.resolve(null as Any)
+          isEdit ? getTask(id!) : Promise.resolve(null as any)
         ]);
         setCats(catsRes.items);
         if (isEdit) setTask(taskRes);
-      } catch (e: Any) {
+      } catch (e: any) {
         setError(e?.response?.data ?? 'Falha ao carregar dados.');
       }
     };
     run();
   }, [id, isEdit]);
 
-  const handleSubmit = async (payload: Any) => {
+  const handleSubmit = async (payload: any) => {
     if (isEdit) await updateTask(id!, payload);
     else await createTask(payload);
     nav('/tasks');

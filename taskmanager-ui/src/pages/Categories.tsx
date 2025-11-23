@@ -44,8 +44,7 @@ const CategoriesPage: React.FC = () => {
     items: CategoryDto[];
     total: number;
   }>({ items: [], total: 0 });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [loading, setLoading] = React.useState(true);
+  
   const [error, setError] = React.useState<string | null>(null);
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = React.useState<CategoryDto | null>(null);
@@ -53,13 +52,10 @@ const CategoriesPage: React.FC = () => {
 
   const fetchAll = async () => {
     try {
-      setLoading(true);
       const res = await listCategories(filters);
       setData({ items: res.items, total: res.totalItems });
-    } catch (e: Any) {
+    } catch (e: any) {
       setError(e?.response?.data ?? "Falha ao carregar categorias");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -84,7 +80,7 @@ const CategoriesPage: React.FC = () => {
       else await createCategory({ description: desc });
       setOpen(false);
       await fetchAll();
-    } catch (e: Any) {
+    } catch (e: any) {
       setError(e?.response?.data ?? "Erro ao salvar categoria");
     }
   };
@@ -92,7 +88,7 @@ const CategoriesPage: React.FC = () => {
     try {
       await deleteCategory(id);
       await fetchAll();
-    } catch (e: Any) {
+    } catch (e: any) {
       setError(
         e?.response?.status === 409
           ? "Não é possível excluir: existem tarefas vinculadas."

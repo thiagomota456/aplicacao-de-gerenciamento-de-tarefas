@@ -33,7 +33,7 @@ const TasksPage: React.FC = () => {
     SortDir: "desc",
     Page: 1,
     PageSize: 10,
-    CategoryId: "",
+    CategoryId: undefined,
     IsCompleted: "",
   });
 
@@ -51,12 +51,8 @@ const TasksPage: React.FC = () => {
       setLoading(true);
       const apiFilters: TaskQuery = {
         ...filters,
-        CategoryId:
-          filters.CategoryId === "" ? undefined : Number(filters.CategoryId),
-        IsCompleted:
-          filters.IsCompleted === ""
-            ? undefined
-            : filters.IsCompleted === "true",
+        CategoryId: filters.CategoryId,
+        IsCompleted: filters.IsCompleted === "" ? undefined : filters.IsCompleted,
       };
 
       const [tasksRes, catsRes] = await Promise.all([
@@ -70,7 +66,7 @@ const TasksPage: React.FC = () => {
       ]);
       setData({ items: tasksRes.items, total: tasksRes.totalItems });
       setCats(catsRes.items);
-    } catch (e: Any) {
+    } catch (e: any) {
       setError(e?.response?.data ?? "Falha ao carregar");
     } finally {
       setLoading(false);
@@ -88,29 +84,25 @@ const TasksPage: React.FC = () => {
 
   const handleCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
-    // Removido o fetchAll(). A mudança de estado é o suficiente.
-    setFilters((f) => ({ ...f, CategoryId: v, Page: 1 }));
+    setFilters((f) => ({ ...f, CategoryId: v ? Number(v) : undefined, Page: 1 }));
   };
 
   const handleStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
-    // Removido o fetchAll().
-    setFilters((f) => ({ ...f, IsCompleted: v, Page: 1 }));
+    setFilters((f) => ({ ...f, IsCompleted: v === "" ? "" : v === "true", Page: 1 }));
   };
 
   const handleSortBy = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
-    // Removido o fetchAll().
-    setFilters((f) => ({ ...f, SortBy: v, Page: 1 }));
+    setFilters((f) => ({ ...f, SortBy: v as TaskQuery['SortBy'], Page: 1 }));
   };
 
   const handleSortDir = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
-    // Removido o fetchAll().
-    setFilters((f) => ({ ...f, SortDir: v, Page: 1 }));
+    setFilters((f) => ({ ...f, SortDir: v as TaskQuery['SortDir'], Page: 1 }));
   };
 
-  const handlePage = (_: unknown, page: number) => { // 'any' alterado para 'unknown' para melhor prática.
+  const handlePage = (_: unknown, page: number) => {
     setFilters((f) => ({ ...f, Page: page }));
   };
 
@@ -122,7 +114,7 @@ const TasksPage: React.FC = () => {
       setDelId(null);
       // Aqui, o fetchAll() é mantido, pois a exclusão é uma ação direta.
       await fetchAll();
-    } catch (e: Any) { // Mudado para 'any'
+    } catch (e: any) {
       setError(e?.response?.data ?? "Erro ao excluir");
     } finally {
       setLoading(false);
@@ -160,7 +152,7 @@ const TasksPage: React.FC = () => {
           <TextField
             select
             label="Categoria"
-            value={filters.CategoryId}
+            value={filters.CategoryId ?? ""}
             onChange={handleCategory}
             sx={{ minWidth: 180 }}
           >
@@ -176,7 +168,7 @@ const TasksPage: React.FC = () => {
           <TextField
             select
             label="Status"
-            value={filters.IsCompleted}
+            value={String(filters.IsCompleted ?? "")}
             onChange={handleStatus}
             sx={{ minWidth: 160 }}
           >

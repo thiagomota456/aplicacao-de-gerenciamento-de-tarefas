@@ -29,11 +29,11 @@ const TaskForm: React.FC<Props> = ({ initial, categories, onSubmit, requireCateg
 
     try {
       setLoading(true);
-      const payload: Any = initial
+      const payload: any = initial
         ? { title, description, isCompleted, categoryId: categoryId === '' ? undefined : Number(categoryId) } as TaskUpdate
         : { userId: auth.userId!, title, description, isCompleted, categoryId: categoryId === '' ? undefined : Number(categoryId) } as TaskCreate;
       await onSubmit(payload);
-    } catch (err) {
+    } catch (err: any) {
       setError(err?.response?.data ?? 'Erro ao salvar tarefa.');
     } finally {
       setLoading(false);

@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
     try {
       await login(username, password);
       nav('/tasks');
-    } catch (err) {
+    } catch (err: any) {
       setError(err?.response?.data ?? 'Falha no login');
     } finally {
       setLoading(false);

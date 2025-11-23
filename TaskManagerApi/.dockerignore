@@ -4,10 +4,12 @@
 
 # Arquivos de configuração locais / IDE
 .vs/
+.vscode/
 *.user
 *.userosscache
 *.suo
 *.sln.docstates
+*.idea/
 
 # Git e ambiente local
 .git/
@@ -28,3 +30,5 @@ npm-debug.log
 yarn-error.log
 dist/
 build/
+coverage/
+test/
