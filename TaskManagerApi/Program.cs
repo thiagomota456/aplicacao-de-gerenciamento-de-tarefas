@@ -106,6 +106,8 @@ using (var scope = app.Services.CreateScope())
         {
             context.Database.Migrate();
             Console.WriteLine("Migrações do banco de dados aplicadas com sucesso.");
+            DbSeeder.Seed(context);
+            Console.WriteLine("Dados de exemplo inseridos com sucesso (se o banco estava vazio).");
         }
     }
     catch (Exception ex)
