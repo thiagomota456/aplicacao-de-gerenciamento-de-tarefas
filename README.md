@@ -1,6 +1,6 @@
 # Aplicação de Gerenciamento de Tarefas (Task Manager)
 
-Uma aplicação completa para **gerenciamento de tarefas e categorias**, desenvolvida com **.NET 9 (ASP.NET Core Web API)** no backend e **React + TypeScript + Material UI** no frontend.  
+Uma aplicação completa para **gerenciamento de tarefas e categorias**, desenvolvida com **.NET 10 (ASP.NET Core Web API)** no backend e **React + TypeScript + Material UI** no frontend.  
 O sistema permite **autenticação JWT**, **CRUD de tarefas e categorias**, **filtros avançados**, **paginação**, e **interface moderna responsiva**.
 
 ---
@@ -22,7 +22,7 @@ O sistema permite **autenticação JWT**, **CRUD de tarefas e categorias**, **fi
 ```
 aplicacao-de-gerenciamento-de-tarefas-main/
 │
-├── TaskManagerApi/              # Backend em .NET 9
+├── TaskManagerApi/              # Backend em .NET 10
 │   ├── Controllers/             # Endpoints principais (Auth, Tasks, Categories)
 │   ├── DTOs/                    # Objetos de transferência de dados
 │   ├── Models/                  # Modelos de domínio (User, Task, Category)
@@ -43,9 +43,9 @@ aplicacao-de-gerenciamento-de-tarefas-main/
 
 ## ⚙️ Requisitos
 
-### Backend (.NET 9)
+### Backend (.NET 10)
 
-- [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download)
+- [.NET SDK 10.0](https://dotnet.microsoft.com/en-us/download)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Frontend (Node.js)
@@ -53,9 +53,38 @@ aplicacao-de-gerenciamento-de-tarefas-main/
 - [Node.js 18+](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
 
+### Infraestrutura
+
+- [Docker](https://www.docker.com/products/docker-desktop/) (Opcional, mas recomendado)
+
 ---
 
-## 🚀 Executando o Projeto
+## 🐳 Executando com Docker (Recomendado)
+
+A maneira mais fácil de rodar o projeto é utilizando os scripts de automação inclusos, que configuram todo o ambiente (API, UI e Banco de Dados) via Docker.
+
+### Linux / WSL
+```bash
+./build_and_deploy.sh
+```
+
+### macOS
+```bash
+./build_and_deploy_mac.sh
+```
+
+### Windows (PowerShell)
+```powershell
+.\build_and_deploy.ps1
+```
+
+> **Nota:** O script irá construir as imagens, criar os containers e iniciar a aplicação.
+> - **API:** http://localhost:8080
+> - **Frontend:** http://localhost:3000
+
+---
+
+## 🛠️ Execução Manual (Desenvolvimento)
 
 ### 1. Clonar o repositório
 
@@ -76,7 +105,7 @@ dotnet run
 Por padrão, o servidor executa em:
 
 ```
-http://localhost:5064
+http://localhost:5000
 ```
 
 ---
@@ -92,8 +121,13 @@ npm run dev
 Por padrão, o servidor executa em:
 
 ```
-http://localhost:5173
+http://localhost:3000
 ```
+
+> **Nota sobre Portas:**
+> * **Docker:** API na porta `8080` e UI na porta `3000`.
+> * **Manual:** API na porta `5000` (padrão .NET) e UI na porta `3000` (Vite).
+
 
 ---
 
@@ -161,7 +195,7 @@ Jwt__Key=E%7@J5@4#1IGn&!T2p6hPEE%6x$5%X@1
 }
 ```
 
-Para mais, [acesse essa pagina](./TaskManagerApi/docs/filtros.md).
+Para mais, [📄 Documentação de Filtros](./TaskManagerApi/docs/filtros.md).
 
 ---
 
@@ -195,7 +229,7 @@ No `.env`:
 ConnectionStrings__Default=Host=localhost;Database=TaskManager;Username=postgres;Password=admin;
 ```
 
-Para saber sobre configurações e uso do banco de dados [isso pode ajudar](./TaskManagerApi/docs/Dados.md)
+Para saber sobre configurações e uso do banco de dados [🗄️ Guia de Banco de Dados](./TaskManagerApi/docs/Dados.md)
 
 ---
 
@@ -203,7 +237,7 @@ Para saber sobre configurações e uso do banco de dados [isso pode ajudar](./Ta
 
 | Camada       | Tecnologia                                 |
 | ------------ | ------------------------------------------ |
-| Backend      | ASP.NET Core 9, Entity Framework Core, JWT |
+| Backend      | ASP.NET Core 10, Entity Framework Core, JWT |
 | Banco        | PostgreSQL                                 |
 | Frontend     | React + TypeScript                         |
 | UI           | Material UI (MUI)                          |
@@ -257,7 +291,7 @@ _(Baseado nos arquivos `TasksController.cs`, `CategoriesController.cs` e `AuthCo
 
 O projeto utiliza o pacote **[DotNetEnv](https://www.nuget.org/packages/DotNetEnv)** para permitir o uso de variáveis de ambiente definidas em um arquivo `.env`.
 Esse mecanismo serve para **retirar informações sensíveis** do `appsettings.json` (como senhas, chaves JWT e URLs) e **mantê-las fora do código versionado**.
-Para mais detalhes, [acesse essa página](./TaskManagerApi/docs/envFiles.md)
+Para mais detalhes, [⚙️ Configuração do .env](./TaskManagerApi/docs/envFiles.md)
 
 ---
 

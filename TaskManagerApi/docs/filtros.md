@@ -37,37 +37,37 @@ A resposta é um `PagedResponse<TaskDto>` com:
 **URL direta**
 
 ```
-/api/tasks?Search=boleto
+http://localhost:8080/api/tasks?Search=boleto
 ```
 
 **cURL**
 
 ```bash
-curl -s "{{baseUrl}}/api/tasks?Search=boleto"
+curl -s "http://localhost:8080/api/tasks?Search=boleto"
 ```
 
 ### 2) Filtrar por usuário e somente pendentes
 
 ```
-/api/tasks?UserId=11111111-1111-1111-1111-111111111111&IsCompleted=false
+http://localhost:8080/api/tasks?UserId=8a1a5b1e-3c2d-4f8a-9b1c-12a34b56c701&IsCompleted=false
 ```
 
 ### 3) Filtrar por categoria e ordenar por título (A→Z)
 
 ```
-/api/tasks?CategoryId=3&SortBy=title&SortDir=asc
+http://localhost:8080/api/tasks?CategoryId=3&SortBy=title&SortDir=asc
 ```
 
 ### 4) Paginação — página 2 com 50 itens por página
 
 ```
-/api/tasks?Page=2&PageSize=50
+http://localhost:8080/api/tasks?Page=2&PageSize=50
 ```
 
 ### 5) Combinar filtros com busca
 
 ```
-/api/tasks?UserId=11111111-1111-1111-1111-111111111111&IsCompleted=false&Search=internet&SortBy=updatedAt&SortDir=desc
+http://localhost:8080/api/tasks?UserId=8a1a5b1e-3c2d-4f8a-9b1c-12a34b56c701&IsCompleted=false&Search=internet&SortBy=updatedAt&SortDir=desc
 ```
 
 ## Dicas

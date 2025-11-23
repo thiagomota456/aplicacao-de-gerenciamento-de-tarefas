@@ -1,4 +1,4 @@
-# Banco de dados — instruções rápidas
+# Guia de Configuração do Banco de Dados
 
 Este guia mostra **como criar a migration inicial**, **gerar o banco** e **popular com dados de exemplo**.
 Funciona com **EF Core** e **PostgreSQL** (DDL abaixo).
@@ -77,6 +77,9 @@ CREATE INDEX "IX_tasks_UserId_IsCompleted" ON public.tasks USING btree ("UserId"
 > Executar este script **após** a estrutura existir.
 > As senhas são **mocks**. (Todas as senhas são admin12345)
 
+<details>
+<summary>📄 Clique para expandir o script SQL de Seed</summary>
+
 ```sql
 BEGIN;
 -- Opcional: limpar dados mantendo a estrutura
@@ -150,3 +153,4 @@ INSERT INTO public.tasks
 
 COMMIT;
 ```
+</details>
