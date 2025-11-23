@@ -1,5 +1,8 @@
 # Aplicação de Gerenciamento de Tarefas (Task Manager)
 
+[🇺🇸 Read in English](./README.en.md)
+
+
 Uma aplicação completa para **gerenciamento de tarefas e categorias**, desenvolvida com **.NET 10 (ASP.NET Core Web API)** no backend e **React + TypeScript + Material UI** no frontend.  
 O sistema permite **autenticação JWT**, **CRUD de tarefas e categorias**, **filtros avançados**, **paginação**, e **interface moderna responsiva**.
 
